@@ -19,7 +19,26 @@
   "home": {
     "greeting": "Chào mừng đến với Pianora",
     "subtitle": "Từ con số 0 đến khi đàn được mọi bài.",
-    "continue": "Bắt đầu học"
+    "continue": "Bắt đầu học",
+    "streak": "Chuỗi ngày tập",
+    "days": "{n, plural, other {# ngày}}",
+    "bestStreak": "Kỷ lục {n} ngày",
+    "freezes": "{n, plural, =0 {Chưa có lượt đóng băng} other {# lượt đóng băng}}",
+    "freezeHelp": "Cứ 7 ngày liên tiếp bạn nhận 1 lượt đóng băng (tối đa 2). Lỡ một ngày, chuỗi được giữ tự động.",
+    "todayGoal": "Mục tiêu hôm nay",
+    "goalMinutes": "{done}/{target} phút",
+    "goalLessons": "{done}/{target} bài",
+    "goalMet": "Đã đạt mục tiêu hôm nay",
+    "playerLevel": "Cấp {n}",
+    "xpProgress": "{into}/{needed} XP tới cấp sau",
+    "continueLesson": "Học tiếp",
+    "allLessonsDone": "Bạn đã học xong mọi bài hiện có",
+    "review": "Ôn tập hằng ngày",
+    "reviewDue": "{n, plural, =0 {Hôm nay không còn thẻ cần ôn} other {# thẻ cần ôn}}",
+    "reviewEmpty": "Học các bài đọc nốt để mở thẻ ôn tập.",
+    "reviewStart": "Ôn ngay",
+    "recentBadges": "Huy hiệu gần đây",
+    "seeStats": "Xem thống kê"
   },
   "path": {
     "title": "Lộ trình học",
@@ -163,5 +182,127 @@
     "lessonsDone": "Đã xong {n}/{total} bài",
     "minutes": "{n} phút",
     "lockedShort": "đang khoá"
+  },
+  "review": {
+    "title": "Ôn tập",
+    "subtitle": "5 phút mỗi ngày: thẻ hiện lại đúng lúc bạn sắp quên.",
+    "empty": "Hiện chưa có thẻ nào cần ôn. Quay lại vào ngày mai nhé!",
+    "cardOf": "Thẻ {n}/{total}",
+    "notePrompt": "Đây là nốt nào? Chọn tên nốt hoặc bấm phím.",
+    "chordPrompt": "Bấm hợp âm {chord}",
+    "chordHint": "Giữ cả 3 nốt cùng lúc, thế bấm nào cũng được.",
+    "correct": "Đúng rồi!",
+    "wrong": "Chưa đúng, thử lại.",
+    "showAnswer": "Xem đáp án",
+    "answer": "Đáp án: {answer}",
+    "next": "Tiếp",
+    "done": "Xong buổi ôn!",
+    "doneDetail": "Nhớ đúng {correct}/{total} thẻ · +{xp} XP",
+    "backHome": "Về trang chủ",
+    "deck": {
+      "note": "Đọc nốt",
+      "chord": "Hợp âm"
+    },
+    "staffLabel": "Khuông nhạc với nốt cần đọc"
+  },
+  "stats": {
+    "level": "Cấp",
+    "totalXp": "Tổng XP",
+    "minutes": "Thời gian tập",
+    "minutesValue": "{n} phút",
+    "lessons": "Bài đã học",
+    "practices": "Lượt luyện bài",
+    "avgScore": "Điểm TB (10 lượt gần nhất)",
+    "chartMinutes": "Số phút tập, 14 ngày qua",
+    "chartScore": "Điểm các lượt luyện bài gần đây",
+    "noData": "Chưa có dữ liệu. Hãy tập một chút nhé!",
+    "tableView": "Xem dạng bảng",
+    "date": "Ngày",
+    "value": "Giá trị",
+    "run": "Lượt",
+    "score": "Điểm",
+    "goalTitle": "Mục tiêu hằng ngày",
+    "goalKind": {
+      "minutes": "Theo phút",
+      "lessons": "Theo số bài"
+    },
+    "goalUnit": {
+      "minutes": "{n} phút",
+      "lessons": "{n} bài"
+    },
+    "badgesTitle": "Huy hiệu",
+    "badgeCount": "{n}/{total} đã mở",
+    "locked": "Chưa mở",
+    "data": "Dữ liệu của bạn",
+    "dataHelp": "Tiến độ chỉ lưu trên máy này. Xuất ra file JSON để sao lưu hoặc chuyển sang máy khác.",
+    "export": "Xuất JSON",
+    "import": "Nhập JSON",
+    "importConfirm": "Nhập file này sẽ thay toàn bộ tiến độ hiện tại. Tiếp tục?",
+    "importOk": "Đã nhập dữ liệu.",
+    "importFail": "File không hợp lệ, dữ liệu chưa bị thay đổi."
+  },
+  "badges": {
+    "toast": "Huy hiệu mới!",
+    "dismiss": "Đóng",
+    "firstLesson": {
+      "title": "Bước đầu tiên",
+      "desc": "Hoàn thành bài học đầu tiên"
+    },
+    "level0": {
+      "title": "Làm quen phím đàn",
+      "desc": "Xong Cấp 0"
+    },
+    "level1": {
+      "title": "Giữ nhịp",
+      "desc": "Xong Cấp 1"
+    },
+    "level2": {
+      "title": "Đọc được khuông nhạc",
+      "desc": "Xong Cấp 2"
+    },
+    "level3": {
+      "title": "Hai tay cùng đàn",
+      "desc": "Xong Cấp 3"
+    },
+    "streak3": {
+      "title": "Khởi động",
+      "desc": "Chuỗi 3 ngày"
+    },
+    "streak7": {
+      "title": "Một tuần chăm chỉ",
+      "desc": "Chuỗi 7 ngày"
+    },
+    "streak30": {
+      "title": "Thói quen thép",
+      "desc": "Chuỗi 30 ngày"
+    },
+    "xp500": {
+      "title": "500 XP",
+      "desc": "Đạt 500 XP"
+    },
+    "xp2000": {
+      "title": "2000 XP",
+      "desc": "Đạt 2000 XP"
+    },
+    "practice10": {
+      "title": "Chăm luyện",
+      "desc": "10 lượt luyện bài"
+    },
+    "perfect": {
+      "title": "Hoàn hảo",
+      "desc": "Đạt 3 sao một lượt luyện bài"
+    },
+    "leftHand": {
+      "title": "Tay trái thép",
+      "desc": "3 lượt 3 sao chỉ với tay trái"
+    },
+    "reviewer": {
+      "title": "Trí nhớ tốt",
+      "desc": "Ôn 50 thẻ"
+    },
+    "hour": {
+      "title": "Giờ đầu tiên",
+      "desc": "Tập tổng cộng 60 phút"
+    }
   }
 }

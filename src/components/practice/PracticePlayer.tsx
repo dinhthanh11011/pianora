@@ -59,7 +59,14 @@ export interface PracticePlayerProps {
   initial?: Partial<PracticeConfig>;
   /** Set false when a parent already wires piano input (e.g. the lesson player). */
   wireInput?: boolean;
-  onFinish?: (summary: ScoreSummary) => void;
+  onFinish?: (summary: ScoreSummary, run: PracticeRun) => void;
+}
+
+/** What was practised, for progress records. */
+export interface PracticeRun {
+  pieceId: string;
+  config: PracticeConfig;
+  durationMs: number;
 }
 
 export function PracticePlayer({ pieces = PRACTICE_PIECES, initial, wireInput = true, onFinish }: PracticePlayerProps) {
@@ -81,8 +88,16 @@ export function PracticePlayer({ pieces = PRACTICE_PIECES, initial, wireInput = 
   const active = useInputStore((st) => st.active);
   const finish = useRef(onFinish);
   finish.current = onFinish;
+  const startedAt = useRef(0);
+  const runInfo = useRef({ pieceId: piece.score.id, config });
+  runInfo.current = { pieceId: piece.score.id, config };
   useEffect(() => {
-    if (summary) finish.current?.(summary);
+    if (phase === "countin" || (phase === "playing" && !startedAt.current)) startedAt.current = Date.now();
+  }, [phase]);
+  useEffect(() => {
+    if (!summary) return;
+    finish.current?.(summary, { ...runInfo.current, durationMs: startedAt.current ? Date.now() - startedAt.current : 0 });
+    startedAt.current = 0;
   }, [summary]);
 
   const [from, to] = useMemo(() => {

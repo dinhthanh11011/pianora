@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import clsx from "clsx";
 import { LivePiano } from "@/components/piano/LivePiano";
+import { rehydrateProgress, useProgress } from "@/stores/progress";
 import { PracticePlayer } from "./PracticePlayer";
 
 const TABS = ["pieces", "free"] as const;
@@ -12,6 +13,8 @@ const TABS = ["pieces", "free"] as const;
 export function PracticeRoom() {
   const t = useTranslations("practice");
   const [tab, setTab] = useState<(typeof TABS)[number]>("pieces");
+  const record = useProgress((s) => s.record);
+  useEffect(rehydrateProgress, []);
   return (
     <>
       <div role="tablist" aria-label={t("title")} className="mb-6 mt-4 inline-flex rounded-xl bg-surface p-1">
@@ -34,7 +37,16 @@ export function PracticeRoom() {
         ))}
       </div>
       <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
-        {tab === "pieces" ? <PracticePlayer /> : <LivePiano />}
+        {tab === "pieces" ? (
+          <PracticePlayer
+            onFinish={(s, run) =>
+              record({
+                type: "practice", pieceId: run.pieceId, score: s.score, stars: s.stars, accuracy: s.accuracy, timing: s.timing,
+                durationMs: run.durationMs, hand: run.config.hand, mode: run.config.mode, tempo: run.config.tempo,
+              })
+            }
+          />
+        ) : <LivePiano />}
       </div>
     </>
   );

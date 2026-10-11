@@ -3,8 +3,8 @@
 > Source of truth for "where are we / what next". Update after every task. Plan: `docs/PLAN.md`.
 
 ## Status
-- **Current phase:** P5 Progress & motivation
-- **Next up:** P5.1 ProgressRepository + Dexie — migrate interim `src/stores/progress.ts` (localStorage key `pianora-progress`) behind the repository
+- **Current phase:** P6 Expansion
+- **Next up:** P6.1 Content Level 4–5 (see PLAN.md curriculum; chord deck in SRS already seeds from Level ≥3)
 - **Blockers:** none
 
 ## Phases & tasks
@@ -45,11 +45,11 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` todo
 - [x] P4.8 Path (skill tree) page with lock/unlock
 
 ### P5 — Progress & motivation
-- [ ] P5.1 ProgressRepository + Dexie impl (lessonProgress, attempts, settings…)
-- [ ] P5.2 XP, stars, streak (+freeze), daily goal
-- [ ] P5.3 SRS (SM-2) for note reading / chords + daily review
-- [ ] P5.4 Dashboard + stats page (charts), export/import JSON
-- [ ] P5.5 Badges
+- [x] P5.1 ProgressRepository + Dexie impl (lessonProgress, attempts, settings…)
+- [x] P5.2 XP, stars, streak (+freeze), daily goal
+- [x] P5.3 SRS (SM-2) for note reading / chords + daily review
+- [x] P5.4 Dashboard + stats page (charts), export/import JSON
+- [x] P5.5 Badges
 
 ### P6 — Expansion
 - [ ] P6.1 Content L4–L5 · [ ] P6.2 L6–L7 · [ ] P6.3 L8–L10
@@ -66,6 +66,7 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` todo
 - 2026-10-11 Design: ui-ux-pro-max output adapted — fonts Be Vietnam Pro (Vietnamese diacritics; Righteous/Poppins lack them); primary indigo instead of red because red/green are reserved for wrong/correct note feedback; amber kept as accent (XP/streak). Dark default. See MASTER.md "Pianora overrides".
 
 - 2026-10-11 Lesson progress kept in an interim Zustand/localStorage store (`stores/progress.ts`) so the path can lock/unlock before P5.1; unlock order is linear across the whole curriculum.
+- 2026-10-11 P5: device settings (sound, latency, volume, theme) stay in localStorage (read synchronously on load); learner progress lives in IndexedDB behind `ProgressRepository`. Streak counts any finished activity (lesson, practice run, review); freeze earned every 7 days (max 2). SRS note cards come from completed `readNote` drills; C-major triad deck unlocks with Level 3.
 
 ## Session log
 - 2026-10-11 S1: plan approved; P1 done (build OK); P2.1–P2.2 music-core + 9 tests passing.
@@ -74,6 +75,7 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` todo
 - 2026-10-11 S2: P3.1 — `music-core/score.ts` (Score in beats → `toTimeline` ms w/ tempo/hand/A–B, `groupChords` 80ms) + `scoring.ts` (windows 50/120/250, `TimingMatcher` real-time, `WaitCursor`, `summarize` → accuracy/timing/score/stars/offsets/velocity evenness/byNote, `toScoreTime` subtracts latency). 19 tests, tsc + lint clean.
 - 2026-10-11 S2: P3 done — `notation.ts` (measures/rests/ties → VexFlow tokens), `StaffView` (VexFlow lazy, grand staff, cursor, status colors, scales down <640px), `FallingNotes` canvas (shared `keyLayout` with Keyboard88), `usePracticeSession` (Wait/Play-along/Performance, count-in via audio-clock `scheduleClicks`, A–B loop, tempo 40–120%, hand split auto-plays other hand), `ResultPanel` (stars, histogram, rushing/dragging, weak-note heatmap via Keyboard88 `tints`). 3 demo pieces in `src/content/scores`. Practice page = tabs (pieces / free play). 21 tests, build + lint clean; verified in Chrome (wait + play-along scored as scripted, light/dark, 375px).
 - 2026-10-11 S3: P4 done — zod curriculum schema (Level→Unit→Lesson→Step: theory/quiz/findNote/readNote/rhythm/play), content L0–L3 (29 lessons, checkpoints per level), LessonPlayer (`/lesson/[id]`, gated steps, stars/XP), drills (find key incl. all-octaves timed, staff reading, rhythm tapping via TimingMatcher), PathView with lock/unlock. `music-core/drills.ts` + curriculum tests, vitest alias config. 30 tests, build + lint clean; verified in Chrome.
+- 2026-10-11 S4: P5 done — `lib/storage` (types, Dexie `IndexedDbProgressRepository`, memory repo fallback, zod backup v1, legacy `pianora-progress` migration), `lib/gamification` (dates, streak+freeze, XP/player level, daily goal, SM-2 SRS + decks, badges, pure `applyEvent` reducer), store `stores/progress.ts` (`record(event)` → repo). UI: Dashboard on home, `/review` (notes by letter/key, chords held together), Profile stats (tiles, minutes bar + score line charts with table view, goal picker, badges grid, export/import JSON), BadgeToast in shell. 43 tests, build + lint clean; verified in headless Chrome (migration, review, lesson, import, light/dark, 375px).
 
 ## Key files map (for fast resume)
 - Input pipeline: `src/lib/midi/bus.ts` → `src/hooks/usePianoInput.ts` (sound + store) · sources: `webmidi.ts`, `computerKeyboard.ts`, `pointerHandlers`
@@ -81,4 +83,5 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` todo
 - UI: `src/components/piano/{Keyboard88,LivePiano,MidiStatus}.tsx`, `src/components/tools/*`, shell `src/components/shell/*`
 - Theory: `src/lib/music-core/*` (index re-exports all) · practice: `score.ts`, `scoring.ts`, `notation.ts`
 - Practice UI: `src/components/practice/{PracticeRoom,PracticePlayer,FallingNotes,ResultPanel}.tsx` · engine hook `src/hooks/usePracticeSession.ts` · staff `src/components/notation/StaffView.tsx`
-- Curriculum: `src/content/curriculum/{schema,index,level0-3,songs,build}.ts` · lesson UI `src/components/lesson/*` (LessonPlayer, PathView, drills) · progress `src/stores/progress.ts`
+- Curriculum: `src/content/curriculum/{schema,index,level0-3,songs,build}.ts` · lesson UI `src/components/lesson/*` (LessonPlayer, PathView, drills) · progress `src/stores/progress.ts` (`record(event)`)
+- Progress: `src/lib/storage/{types,dexie,memory,backup,legacy}.ts` · `src/lib/gamification/{events,streak,srs,decks,badges,xp,goal,dates}.ts` · UI `src/components/progress/{Dashboard,ReviewSession,StatsView,Charts,BadgeToast}.tsx`

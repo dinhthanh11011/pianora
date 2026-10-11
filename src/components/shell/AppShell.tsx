@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { House, Map, Piano, Wrench, User } from "lucide-react";
 import clsx from "clsx";
 import { Link, usePathname } from "@/i18n/navigation";
+import { BadgeToast } from "@/components/progress/BadgeToast";
 import { ThemeToggle } from "./ThemeToggle";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
@@ -96,6 +97,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
       </div>
+      <BadgeToast />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ChevronLeft, ChevronRight, Lock, RotateCcw, Star, X } from "lucide-react";
 import clsx from "clsx";
@@ -8,6 +8,7 @@ import { starsFor } from "@/lib/music-core";
 import { findLesson, isUnlocked, nextLesson, type Step } from "@/content/curriculum";
 import { Link } from "@/i18n/navigation";
 import { usePianoInput } from "@/hooks/usePianoInput";
+import { lessonXp } from "@/lib/gamification/xp";
 import { rehydrateProgress, useProgress } from "@/stores/progress";
 import { PracticePlayer } from "@/components/practice/PracticePlayer";
 import { MidiStatus } from "@/components/piano/MidiStatus";
@@ -20,11 +21,6 @@ import { useLText } from "./text";
 import type { StepResultFn } from "./types";
 
 const graded = (s: Step) => s.type !== "theory";
-
-/** XP for a finished lesson: base by kind + 5 per star. */
-export function lessonXp(kind: string, stars: number): number {
-  return (kind === "checkpoint" ? 30 : 10) + stars * 5;
-}
 
 function StepView({ step, level, onResult }: { step: Step; level: number; onResult: StepResultFn }) {
   const tx = useLText();
@@ -64,8 +60,12 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
   const [attempt, setAttempt] = useState(0);
   const [results, setResults] = useState<(number | null)[]>(() => lesson.steps.map(() => null));
   const [done, setDone] = useState<{ score: number; stars: 0 | 1 | 2 | 3; xp: number } | null>(null);
-  const { hydrated, lessons, completeLesson } = useProgress();
+  const { hydrated, lessons, record } = useProgress();
   useEffect(rehydrateProgress, []);
+  const startedAt = useRef(0);
+  useEffect(() => {
+    startedAt.current = Date.now();
+  }, [attempt]);
 
   const step = lesson.steps[stepIdx];
   const canContinue = !graded(step) || results[stepIdx] !== null;
@@ -81,7 +81,7 @@ export function LessonPlayer({ lessonId }: { lessonId: string }) {
     const score = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 100;
     const stars = Math.max(1, starsFor(score)) as 1 | 2 | 3;
     const xp = lessonXp(lesson.kind, stars);
-    completeLesson(lesson.id, score, stars, xp);
+    record({ type: "lesson", lessonId: lesson.id, score, stars, xp, durationMs: Date.now() - startedAt.current });
     setDone({ score, stars, xp });
   };
 

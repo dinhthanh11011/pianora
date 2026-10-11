@@ -19,7 +19,26 @@
   "home": {
     "greeting": "Welcome to Pianora",
     "subtitle": "From zero to playing anything.",
-    "continue": "Start learning"
+    "continue": "Start learning",
+    "streak": "Practice streak",
+    "days": "{n, plural, one {# day} other {# days}}",
+    "bestStreak": "Best {n} days",
+    "freezes": "{n, plural, =0 {No streak freezes} one {# streak freeze} other {# streak freezes}}",
+    "freezeHelp": "Every 7 days in a row earns a freeze (max 2). Miss a day and your streak is kept automatically.",
+    "todayGoal": "Today's goal",
+    "goalMinutes": "{done}/{target} min",
+    "goalLessons": "{done}/{target} lessons",
+    "goalMet": "Goal reached today",
+    "playerLevel": "Level {n}",
+    "xpProgress": "{into}/{needed} XP to next level",
+    "continueLesson": "Continue",
+    "allLessonsDone": "You've finished every lesson available",
+    "review": "Daily review",
+    "reviewDue": "{n, plural, =0 {No cards due today} one {# card due} other {# cards due}}",
+    "reviewEmpty": "Finish note-reading lessons to unlock review cards.",
+    "reviewStart": "Review now",
+    "recentBadges": "Recent badges",
+    "seeStats": "See stats"
   },
   "path": {
     "title": "Learning path",
@@ -163,5 +182,127 @@
     "lessonsDone": "{n}/{total} lessons done",
     "minutes": "{n} min",
     "lockedShort": "locked"
+  },
+  "review": {
+    "title": "Review",
+    "subtitle": "5 minutes a day: cards come back right before you'd forget them.",
+    "empty": "No cards to review right now. Come back tomorrow!",
+    "cardOf": "Card {n}/{total}",
+    "notePrompt": "Which note is this? Pick its name or play the key.",
+    "chordPrompt": "Play the chord {chord}",
+    "chordHint": "Hold all 3 notes together, any voicing.",
+    "correct": "Correct!",
+    "wrong": "Not quite, try again.",
+    "showAnswer": "Show answer",
+    "answer": "Answer: {answer}",
+    "next": "Next",
+    "done": "Review done!",
+    "doneDetail": "Recalled {correct}/{total} cards · +{xp} XP",
+    "backHome": "Back home",
+    "deck": {
+      "note": "Note reading",
+      "chord": "Chords"
+    },
+    "staffLabel": "Staff with the note to read"
+  },
+  "stats": {
+    "level": "Level",
+    "totalXp": "Total XP",
+    "minutes": "Practice time",
+    "minutesValue": "{n} min",
+    "lessons": "Lessons done",
+    "practices": "Practice runs",
+    "avgScore": "Avg score (last 10 runs)",
+    "chartMinutes": "Minutes practised, last 14 days",
+    "chartScore": "Recent practice run scores",
+    "noData": "No data yet. Go play a little!",
+    "tableView": "Show as table",
+    "date": "Date",
+    "value": "Value",
+    "run": "Run",
+    "score": "Score",
+    "goalTitle": "Daily goal",
+    "goalKind": {
+      "minutes": "Minutes",
+      "lessons": "Lessons"
+    },
+    "goalUnit": {
+      "minutes": "{n} min",
+      "lessons": "{n, plural, one {# lesson} other {# lessons}}"
+    },
+    "badgesTitle": "Badges",
+    "badgeCount": "{n}/{total} unlocked",
+    "locked": "Locked",
+    "data": "Your data",
+    "dataHelp": "Progress is stored on this device only. Export a JSON file to back it up or move it to another device.",
+    "export": "Export JSON",
+    "import": "Import JSON",
+    "importConfirm": "Importing this file replaces all current progress. Continue?",
+    "importOk": "Data imported.",
+    "importFail": "Invalid file, nothing was changed."
+  },
+  "badges": {
+    "toast": "New badge!",
+    "dismiss": "Dismiss",
+    "firstLesson": {
+      "title": "First step",
+      "desc": "Finish your first lesson"
+    },
+    "level0": {
+      "title": "Meet the keys",
+      "desc": "Finish Level 0"
+    },
+    "level1": {
+      "title": "Keeping time",
+      "desc": "Finish Level 1"
+    },
+    "level2": {
+      "title": "Staff reader",
+      "desc": "Finish Level 2"
+    },
+    "level3": {
+      "title": "Two hands",
+      "desc": "Finish Level 3"
+    },
+    "streak3": {
+      "title": "Warming up",
+      "desc": "3-day streak"
+    },
+    "streak7": {
+      "title": "A solid week",
+      "desc": "7-day streak"
+    },
+    "streak30": {
+      "title": "Iron habit",
+      "desc": "30-day streak"
+    },
+    "xp500": {
+      "title": "500 XP",
+      "desc": "Earn 500 XP"
+    },
+    "xp2000": {
+      "title": "2000 XP",
+      "desc": "Earn 2000 XP"
+    },
+    "practice10": {
+      "title": "Diligent",
+      "desc": "10 practice runs"
+    },
+    "perfect": {
+      "title": "Flawless",
+      "desc": "3 stars on a practice run"
+    },
+    "leftHand": {
+      "title": "Iron left hand",
+      "desc": "3 three-star runs, left hand only"
+    },
+    "reviewer": {
+      "title": "Sharp memory",
+      "desc": "Review 50 cards"
+    },
+    "hour": {
+      "title": "First hour",
+      "desc": "Practise 60 minutes in total"
+    }
   }
 }

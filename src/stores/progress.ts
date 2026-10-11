@@ -1,54 +1,98 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-
-export interface LessonResult {
-  /** Best score 0–100 and stars across attempts. */
-  score: number;
-  stars: 0 | 1 | 2 | 3;
-  attempts: number;
-  completedAt: number;
-}
+import { applyEvent, emptySnapshot, type EventResult, type ProgressEvent } from "@/lib/gamification/events";
+import type { DailyGoal } from "@/lib/gamification/goal";
+import { MemoryProgressRepository } from "@/lib/storage/memory";
+import { LEGACY_KEY, migrateLegacy } from "@/lib/storage/legacy";
+import type { ChangeSet, LessonProgress, ProgressRepository, ProgressSnapshot } from "@/lib/storage/types";
 
 interface ProgressState {
-  lessons: Record<string, LessonResult>;
-  xp: number;
-  /** True once localStorage has been read (avoid SSR/client mismatch). */
+  /** True once the repository has been read (avoid SSR/client mismatch). */
   hydrated: boolean;
-  completeLesson: (id: string, score: number, stars: 0 | 1 | 2 | 3, xp: number) => void;
+  snapshot: ProgressSnapshot;
+  /** Derived: lesson id → best result. */
+  lessons: Record<string, LessonProgress>;
+  xp: number;
+  /** Newly earned badge ids waiting to be announced. */
+  pendingBadges: string[];
+  record: (e: ProgressEvent) => EventResult;
+  setGoal: (goal: DailyGoal) => void;
+  replaceAll: (s: ProgressSnapshot) => Promise<void>;
+  dismissBadge: () => void;
 }
 
-/**
- * Interim lesson progress in localStorage so the path can lock/unlock now.
- * P5.1 moves this behind ProgressRepository (Dexie) and migrates this key.
- */
-export const useProgress = create<ProgressState>()(
-  persist(
-    (set) => ({
-      lessons: {},
-      xp: 0,
-      hydrated: false,
-      completeLesson: (id, score, stars, xp) =>
-        set((s) => {
-          const prev = s.lessons[id];
-          const best: LessonResult = {
-            score: Math.max(prev?.score ?? 0, score),
-            stars: Math.max(prev?.stars ?? 0, stars) as LessonResult["stars"],
-            attempts: (prev?.attempts ?? 0) + 1,
-            completedAt: Date.now(),
-          };
-          return { lessons: { ...s.lessons, [id]: best }, xp: s.xp + xp };
-        }),
-    }),
-    {
-      name: "pianora-progress",
-      skipHydration: true,
-      partialize: ({ lessons, xp }) => ({ lessons, xp }),
-      onRehydrateStorage: () => () => useProgress.setState({ hydrated: true }),
-    },
-  ),
-);
+let repo: ProgressRepository | null = null;
+let queue: Promise<void> = Promise.resolve();
 
-/** Call from client components that read progress; rehydrates once after mount. */
+/** Writes run in order; a failed write is logged, the in-memory state stays authoritative. */
+function persist(task: (r: ProgressRepository) => Promise<void>) {
+  const r = repo;
+  if (!r) return queue;
+  queue = queue.then(() => task(r)).catch((err) => console.error("[progress] save failed", err));
+  return queue;
+}
+
+const derive = (snapshot: ProgressSnapshot) => ({
+  snapshot,
+  lessons: Object.fromEntries(snapshot.lessons.map((l) => [l.id, l])),
+  xp: snapshot.profile.xp,
+});
+
+export const useProgress = create<ProgressState>()((set, get) => ({
+  hydrated: false,
+  ...derive(emptySnapshot(0)),
+  pendingBadges: [],
+  record: (e) => {
+    const result = applyEvent(get().snapshot, e);
+    set({ ...derive(result.snapshot), pendingBadges: [...get().pendingBadges, ...result.badges] });
+    void persist((r) => r.save(result.changes));
+    return result;
+  },
+  setGoal: (goal) => {
+    const profile = { ...get().snapshot.profile, goal, updatedAt: Date.now() };
+    set(derive({ ...get().snapshot, profile }));
+    void persist((r) => r.save({ profile } satisfies ChangeSet));
+  },
+  replaceAll: async (s) => {
+    set({ ...derive(s), pendingBadges: [] });
+    await persist((r) => r.replaceAll(s));
+  },
+  dismissBadge: () => set({ pendingBadges: get().pendingBadges.slice(1) }),
+}));
+
+async function openRepository(): Promise<{ repo: ProgressRepository; snapshot: ProgressSnapshot }> {
+  if (typeof indexedDB !== "undefined") {
+    try {
+      const { IndexedDbProgressRepository } = await import("@/lib/storage/dexie");
+      const db = new IndexedDbProgressRepository();
+      return { repo: db, snapshot: await db.load() };
+    } catch (err) {
+      console.warn("[progress] IndexedDB unavailable, progress kept in memory only", err);
+    }
+  }
+  const mem = new MemoryProgressRepository();
+  return { repo: mem, snapshot: await mem.load() };
+}
+
+let loading: Promise<void> | null = null;
+
+/** Call from client components that read progress; loads once after mount (and migrates the interim store). */
 export function rehydrateProgress(): void {
-  if (!useProgress.getState().hydrated) void useProgress.persist.rehydrate();
+  loading ??= (async () => {
+    const opened = await openRepository();
+    repo = opened.repo;
+    let snapshot = opened.snapshot;
+    let legacy: string | null = null;
+    try {
+      legacy = localStorage.getItem(LEGACY_KEY);
+    } catch {}
+    const migrated = migrateLegacy(legacy, snapshot);
+    if (migrated) {
+      snapshot = migrated;
+      await repo.replaceAll(snapshot);
+      try {
+        localStorage.removeItem(LEGACY_KEY);
+      } catch {}
+    }
+    useProgress.setState({ ...derive(snapshot), hydrated: true });
+  })();
 }
