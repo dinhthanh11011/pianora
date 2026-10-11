@@ -1,7 +1,8 @@
 "use client";
 
 import { memo, useCallback, useMemo, useRef, type PointerEvent } from "react";
-import { PIANO_MAX, PIANO_MIN, isBlackKey, midiToName, pitchClass, whiteKeyIndex } from "@/lib/music-core";
+import { PIANO_MAX, PIANO_MIN, isBlackKey, midiToName, pitchClass } from "@/lib/music-core";
+import { BLACK_H as BH, BLACK_W as BW, KEY_H as H, KEY_W as W, keyLayout } from "./keyLayout";
 
 export type KeyState = "expected" | "correct" | "wrong" | "active";
 export type Hand = "left" | "right";
@@ -13,6 +14,8 @@ export interface Keyboard88Props {
   states?: Partial<Record<number, KeyState>>;
   hands?: Partial<Record<number, Hand>>;
   fingers?: Partial<Record<number, number>>;
+  /** Custom fill per key (e.g. heatmap), used when the key has no state. */
+  tints?: Partial<Record<number, string>>;
   /** "c" = label only C keys, "white" = all white keys, "none". */
   labels?: "c" | "white" | "none";
   onNoteOn?: (midi: number, velocity: number) => void;
@@ -21,10 +24,6 @@ export interface Keyboard88Props {
   ariaLabel?: string;
 }
 
-const W = 24; // white key width (svg units)
-const H = 140;
-const BW = 14;
-const BH = 88;
 
 const fillFor = (midi: number, state: KeyState | undefined, hand: Hand | undefined): string => {
   const black = isBlackKey(midi);
@@ -48,27 +47,14 @@ function Keyboard88Impl({
   states = {},
   hands = {},
   fingers = {},
+  tints = {},
   labels = "c",
   onNoteOn,
   onNoteOff,
   className,
   ariaLabel = "Piano keyboard",
 }: Keyboard88Props) {
-  // Ranges must start and end on white keys so the layout stays aligned.
-  const lo = isBlackKey(from) ? from - 1 : from;
-  const hi = isBlackKey(to) ? to + 1 : to;
-
-  const { whites, blacks, width } = useMemo(() => {
-    const base = whiteKeyIndex(lo);
-    const whites: { midi: number; x: number }[] = [];
-    const blacks: { midi: number; x: number }[] = [];
-    for (let m = lo; m <= hi; m++) {
-      const wi = whiteKeyIndex(m) - base;
-      if (isBlackKey(m)) blacks.push({ midi: m, x: (wi + 1) * W - BW / 2 });
-      else whites.push({ midi: m, x: wi * W });
-    }
-    return { whites, blacks, width: whites.length * W };
-  }, [lo, hi]);
+  const { whites, blacks, width } = useMemo(() => keyLayout(from, to), [from, to]);
 
   const down = useRef<number | null>(null);
 
@@ -140,7 +126,7 @@ function Keyboard88Impl({
               width={W - 1}
               height={H}
               rx={3}
-              fill={fillFor(midi, state, hands[midi])}
+              fill={(!state && tints[midi]) || fillFor(midi, state, hands[midi])}
               stroke="var(--border)"
               strokeWidth={1}
             >
@@ -169,7 +155,7 @@ function Keyboard88Impl({
         const finger = fingers[midi];
         return (
           <g key={midi} data-midi={midi}>
-            <rect x={x} y={0} width={BW} height={BH} rx={2} fill={fillFor(midi, state, hands[midi])}>
+            <rect x={x} y={0} width={BW} height={BH} rx={2} fill={(!state && tints[midi]) || fillFor(midi, state, hands[midi])}>
               <title>{midiToName(midi)}</title>
             </rect>
             {finger && (

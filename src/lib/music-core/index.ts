@@ -4,3 +4,6 @@ export * from "./scales";
 export * from "./chords";
 export * from "./keys";
 export * from "./calibration";
+export * from "./score";
+export * from "./scoring";
+export * from "./notation";

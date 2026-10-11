@@ -46,3 +46,32 @@ export function stopMetronome(): void {
     t.position = 0;
   });
 }
+
+export interface ClickTrack {
+  /** performance.now() time of the first click. */
+  startAt: number;
+  stop: () => void;
+}
+
+/**
+ * Sample-accurate clicks for practice sessions (count-in + optional beat track).
+ * Scheduled on the audio clock, so the returned `startAt` maps beat 0 onto performance.now().
+ */
+export async function scheduleClicks(
+  { bpm, beatsPerBar, beats, leadSec = 0.15 }: { bpm: number; beatsPerBar: number; beats: number; leadSec?: number },
+): Promise<ClickTrack> {
+  const Tone = await startAudio();
+  const synth = new Tone.Synth({
+    oscillator: { type: "square" },
+    envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.01 },
+    volume: -10,
+  }).toDestination();
+  const ctx = Tone.getContext().rawContext as AudioContext;
+  const base = ctx.currentTime + leadSec;
+  const startAt = performance.now() + leadSec * 1000;
+  const beatSec = 60 / bpm;
+  for (let i = 0; i < beats; i++) {
+    synth.triggerAttackRelease(i % beatsPerBar === 0 ? "C6" : "G5", "32n", base + i * beatSec);
+  }
+  return { startAt, stop: () => synth.dispose() };
+}
