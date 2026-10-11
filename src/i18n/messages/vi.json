@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Pianora — Học piano từ số 0",
+    "description": "Học piano từ con số 0 đến khi đàn được mọi bài."
+  },
+  "common": {
+    "skipToContent": "Bỏ qua tới nội dung",
+    "themeToggle": "Đổi giao diện sáng/tối",
+    "language": "Ngôn ngữ",
+    "comingSoon": "Sắp ra mắt"
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "path": "Lộ trình",
+    "practice": "Luyện tập",
+    "tools": "Công cụ",
+    "profile": "Hồ sơ"
+  },
+  "home": {
+    "greeting": "Chào mừng đến với Pianora",
+    "subtitle": "Từ con số 0 đến khi đàn được mọi bài.",
+    "continue": "Bắt đầu học"
+  },
+  "path": {
+    "title": "Lộ trình học"
+  },
+  "practice": {
+    "title": "Phòng luyện tập",
+    "freePlay": "Đàn tự do",
+    "chord": "Hợp âm",
+    "keyboardHint": "Bàn phím máy tính: A = {octave}, Z/X đổi quãng tám, Space = pedal",
+    "sustain": "Pedal",
+    "keyboardLabel": "Đàn piano 88 phím"
+  },
+  "tools": {
+    "title": "Công cụ",
+    "metronome": "Máy đếm nhịp",
+    "slower": "Chậm hơn",
+    "faster": "Nhanh hơn",
+    "start": "Bắt đầu",
+    "stop": "Dừng",
+    "beatsPerBar": "Số phách/ô nhịp",
+    "latency": "Hiệu chỉnh độ trễ",
+    "latencyHelp": "Bấm một phím bất kỳ đúng lúc nghe 8 tiếng click. App sẽ đo độ trễ của thiết bị để chấm nhịp chính xác hơn.",
+    "latencyRunning": "Đang đo… bấm theo tiếng click",
+    "latencyFailed": "Chưa đủ dữ liệu, hãy thử lại.",
+    "latencyValue": "Độ trễ hiện tại: {ms} ms",
+    "latencyStart": "Bắt đầu đo"
+  },
+  "profile": {
+    "title": "Hồ sơ & thống kê"
+  },
+  "midi": {
+    "connected": "Đã kết nối: {devices}",
+    "unsupported": "Trình duyệt này chưa hỗ trợ Web MIDI (hãy dùng Chrome hoặc Edge).",
+    "denied": "Bạn đã từ chối quyền truy cập MIDI.",
+    "no-device": "Chưa thấy đàn MIDI. Cắm đàn qua USB/Bluetooth rồi thử lại.",
+    "fallback": "Bạn vẫn có thể bấm phím trên màn hình hoặc dùng bàn phím máy tính (A W S E D F T G Y H U J K…)."
+  }
+}

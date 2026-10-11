@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Pianora — Learn piano from zero",
+    "description": "Learn piano from zero until you can play anything."
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "themeToggle": "Toggle light/dark theme",
+    "language": "Language",
+    "comingSoon": "Coming soon"
+  },
+  "nav": {
+    "home": "Home",
+    "path": "Path",
+    "practice": "Practice",
+    "tools": "Tools",
+    "profile": "Profile"
+  },
+  "home": {
+    "greeting": "Welcome to Pianora",
+    "subtitle": "From zero to playing anything.",
+    "continue": "Start learning"
+  },
+  "path": {
+    "title": "Learning path"
+  },
+  "practice": {
+    "title": "Practice room",
+    "freePlay": "Free play",
+    "chord": "Chord",
+    "keyboardHint": "Computer keyboard: A = {octave}, Z/X change octave, Space = pedal",
+    "sustain": "Pedal",
+    "keyboardLabel": "88-key piano"
+  },
+  "tools": {
+    "title": "Tools",
+    "metronome": "Metronome",
+    "slower": "Slower",
+    "faster": "Faster",
+    "start": "Start",
+    "stop": "Stop",
+    "beatsPerBar": "Beats per bar",
+    "latency": "Latency calibration",
+    "latencyHelp": "Press any key exactly on each of 8 clicks. Pianora measures your device latency so timing scores are accurate.",
+    "latencyRunning": "Measuring… tap along with the clicks",
+    "latencyFailed": "Not enough taps, please try again.",
+    "latencyValue": "Current latency: {ms} ms",
+    "latencyStart": "Start calibration"
+  },
+  "profile": {
+    "title": "Profile & stats"
+  },
+  "midi": {
+    "connected": "Connected: {devices}",
+    "unsupported": "This browser doesn't support Web MIDI (use Chrome or Edge).",
+    "denied": "MIDI access was denied.",
+    "no-device": "No MIDI keyboard found. Connect via USB/Bluetooth and try again.",
+    "fallback": "You can still click the on-screen keys or use your computer keyboard (A W S E D F T G Y H U J K…)."
+  }
+}

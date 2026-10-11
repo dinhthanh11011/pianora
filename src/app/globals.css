@@ -1,26 +1,87 @@
 @import "tailwindcss";
 
+/* Pianora tokens — see design-system/pianora/MASTER.md "Pianora overrides". Dark is default. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  --background: #0b0f1a;
+  --surface: #131a2a;
+  --surface-2: #1b2438;
+  --foreground: #e6eaf2;
+  --muted-foreground: #94a3b8;
+  --border: #26324a;
+  --primary: #818cf8;
+  --on-primary: #0b0f1a;
+  --accent: #f59e0b;
+  --success: #22c55e;
+  --danger: #f87171;
+  --hand-right: #60a5fa;
+  --hand-left: #c084fc;
+  --key-white: #f1f5f9;
+  --key-white-pressed: #cbd5e1;
+  --key-black: #111827;
+  --key-black-pressed: #374151;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-2: #eef2f7;
+  --foreground: #0f172a;
+  --muted-foreground: #475569;
+  --border: #e2e8f0;
+  --primary: #4f46e5;
+  --on-primary: #ffffff;
+  --accent: #d97706;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --hand-right: #3b82f6;
+  --hand-left: #a855f7;
+  --key-white: #ffffff;
+  --key-white-pressed: #e2e8f0;
+  --key-black: #1e293b;
+  --key-black-pressed: #475569;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-muted: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-accent: var(--accent);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+  --color-hand-right: var(--hand-right);
+  --color-hand-left: var(--hand-left);
+  --font-sans: var(--font-be-vietnam), system-ui, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+button, [role="button"], a { cursor: pointer; touch-action: manipulation; }
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
