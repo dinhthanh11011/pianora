@@ -18,6 +18,8 @@ export interface Keyboard88Props {
   tints?: Partial<Record<number, string>>;
   /** "c" = label only C keys, "white" = all white keys, "none". */
   labels?: "c" | "white" | "none";
+  /** Hover/a11y note-name titles; off for drills where the name is the answer. */
+  titles?: boolean;
   onNoteOn?: (midi: number, velocity: number) => void;
   onNoteOff?: (midi: number) => void;
   className?: string;
@@ -49,6 +51,7 @@ function Keyboard88Impl({
   fingers = {},
   tints = {},
   labels = "c",
+  titles = true,
   onNoteOn,
   onNoteOff,
   className,
@@ -130,7 +133,7 @@ function Keyboard88Impl({
               stroke="var(--border)"
               strokeWidth={1}
             >
-              <title>{midiToName(midi)}</title>
+              {titles && <title>{midiToName(midi)}</title>}
             </rect>
             {finger && (
               <text x={x + W / 2} y={H - 34} textAnchor="middle" fontSize={12} fontWeight={700} fill="#0f172a">
@@ -156,7 +159,7 @@ function Keyboard88Impl({
         return (
           <g key={midi} data-midi={midi}>
             <rect x={x} y={0} width={BW} height={BH} rx={2} fill={(!state && tints[midi]) || fillFor(midi, state, hands[midi])}>
-              <title>{midiToName(midi)}</title>
+              {titles && <title>{midiToName(midi)}</title>}
             </rect>
             {finger && (
               <text x={x + BW / 2} y={BH - 10} textAnchor="middle" fontSize={10} fontWeight={700} fill="#fff">

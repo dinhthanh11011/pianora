@@ -7,3 +7,4 @@ export * from "./calibration";
 export * from "./score";
 export * from "./scoring";
 export * from "./notation";
+export * from "./drills";

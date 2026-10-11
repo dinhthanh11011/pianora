@@ -22,7 +22,8 @@
     "continue": "Bắt đầu học"
   },
   "path": {
-    "title": "Lộ trình học"
+    "title": "Lộ trình học",
+    "subtitle": "Từng bước từ phím đàn đầu tiên đến chơi bằng hai tay."
   },
   "practice": {
     "title": "Phòng luyện tập",
@@ -114,5 +115,53 @@
     "denied": "Bạn đã từ chối quyền truy cập MIDI.",
     "no-device": "Chưa thấy đàn MIDI. Cắm đàn qua USB/Bluetooth rồi thử lại.",
     "fallback": "Bạn vẫn có thể bấm phím trên màn hình hoặc dùng bàn phím máy tính (A W S E D F T G Y H U J K…)."
+  },
+  "lesson": {
+    "listen": "Nghe mẫu",
+    "keyboardLabel": "Bàn phím piano",
+    "correct": "Đúng",
+    "wrong": "Sai",
+    "quizCorrect": "Chính xác!",
+    "quizTryAgain": "Chưa đúng — thử đáp án khác nhé.",
+    "drillScore": "Điểm: {score}/100",
+    "drillPassed": "Đạt — bạn có thể đi tiếp.",
+    "drillFailed": "Cần đạt {pass} để đi tiếp. Cứ từ từ và thử lại.",
+    "retry": "Làm lại",
+    "startDrill": "Bắt đầu",
+    "round": "Lượt {n}/{total}",
+    "foundCount": "Đã tìm {n}/{total}",
+    "readStaffLabel": "Khuông nhạc có một nốt cần gọi tên",
+    "chooseNote": "Chọn tên nốt",
+    "rhythmHelp": "Sau một ô nhịp đếm vào ở {bpm} BPM, gõ đúng mỗi nốt: phím đàn bất kỳ, phím Space hoặc nút Gõ.",
+    "rhythmStaffLabel": "Tiết tấu cần gõ",
+    "tap": "Gõ",
+    "rhythmDetail": "{hits}/{total} đúng nhịp, {extra} lần gõ thừa",
+    "locked": "Hoàn thành bài trước để mở khoá bài này.",
+    "backToPath": "Về lộ trình",
+    "exit": "Thoát bài học",
+    "levelN": "Cấp {n}",
+    "progress": "Tiến độ bài học",
+    "stepOf": "Bước {n}/{total}",
+    "complete": "Hoàn thành bài học!",
+    "stars": "{count}/3 sao",
+    "lessonScore": "Điểm {score}/100",
+    "nextLesson": "Bài tiếp theo",
+    "stepNav": "Các bước bài học",
+    "back": "Quay lại",
+    "continue": "Tiếp tục",
+    "finish": "Hoàn thành",
+    "passToContinue": "Hoàn thành bước này để đi tiếp",
+    "kinds": {
+      "theory": "Lý thuyết",
+      "drill": "Luyện tập",
+      "technique": "Kỹ thuật",
+      "song": "Bài nhạc",
+      "checkpoint": "Kiểm tra"
+    },
+    "totalXp": "{xp} XP",
+    "goal": "Mục tiêu",
+    "lessonsDone": "Đã xong {n}/{total} bài",
+    "minutes": "{n} phút",
+    "lockedShort": "đang khoá"
   }
 }

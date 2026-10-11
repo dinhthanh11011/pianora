@@ -1,11 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Play, Square } from "lucide-react";
 import clsx from "clsx";
-import { PIANO_MAX, PIANO_MIN } from "@/lib/music-core";
-import { PRACTICE_PIECES } from "@/content/scores";
+import { PIANO_MAX, PIANO_MIN, type ScoreSummary } from "@/lib/music-core";
+import { PRACTICE_PIECES, type PracticePiece } from "@/content/curriculum/songs";
 import { usePianoInput, pointerHandlers } from "@/hooks/usePianoInput";
 import { usePracticeSession, type PracticeConfig, type PracticeMode } from "@/hooks/usePracticeSession";
 import { useInputStore } from "@/stores/input";
@@ -54,14 +54,22 @@ function Toggle({ label, checked, onChange, disabled }: { label: string; checked
 
 const field = "rounded-lg bg-surface-2 px-2 py-2 text-foreground disabled:opacity-50";
 
-export function PracticePlayer() {
-  usePianoInput();
+export interface PracticePlayerProps {
+  pieces?: PracticePiece[];
+  initial?: Partial<PracticeConfig>;
+  /** Set false when a parent already wires piano input (e.g. the lesson player). */
+  wireInput?: boolean;
+  onFinish?: (summary: ScoreSummary) => void;
+}
+
+export function PracticePlayer({ pieces = PRACTICE_PIECES, initial, wireInput = true, onFinish }: PracticePlayerProps) {
+  usePianoInput({ enabled: wireInput });
   const t = useTranslations("practice");
   const locale = useLocale() as "vi" | "en";
   const [pieceIdx, setPieceIdx] = useState(0);
-  const piece = PRACTICE_PIECES[pieceIdx];
+  const piece = pieces[pieceIdx];
   const [config, setConfig] = useState<PracticeConfig>({
-    mode: "wait", tempo: 1, hand: "both", bars: null, loop: false, metronome: true,
+    mode: "wait", tempo: 1, hand: "both", bars: null, loop: false, metronome: true, ...initial,
   });
   const [showFalling, setShowFalling] = useState(true);
   const set = (patch: Partial<PracticeConfig>) => setConfig((c) => ({ ...c, ...patch }));
@@ -71,6 +79,11 @@ export function PracticePlayer() {
   const running = phase === "countin" || phase === "playing";
   const perf = config.mode === "performance";
   const active = useInputStore((st) => st.active);
+  const finish = useRef(onFinish);
+  finish.current = onFinish;
+  useEffect(() => {
+    if (summary) finish.current?.(summary);
+  }, [summary]);
 
   const [from, to] = useMemo(() => {
     const ms = piece.score.notes.map((n) => n.midi);
@@ -115,15 +128,15 @@ export function PracticePlayer() {
     <section className="space-y-4">
       <MidiStatus />
       <div className="flex flex-wrap items-end gap-x-6 gap-y-4 rounded-2xl border border-border bg-surface p-4">
-        <label className="flex flex-col gap-1 text-sm text-muted">
+        {pieces.length > 1 && <label className="flex flex-col gap-1 text-sm text-muted">
           {t("piece")}
           <select value={pieceIdx} disabled={running} onChange={(e) => {
             setPieceIdx(Number(e.target.value));
             set({ bars: null });
           }} className={clsx(field, "min-h-11")}>
-            {PRACTICE_PIECES.map((p, i) => <option key={p.score.id} value={i}>{p.title[locale]}</option>)}
+            {pieces.map((p, i) => <option key={p.score.id} value={i}>{p.title[locale]}</option>)}
           </select>
-        </label>
+        </label>}
         <div className="flex flex-col gap-1 text-sm text-muted">
           {t("mode")}
           <Segmented label={t("mode")} value={config.mode} options={MODES} disabled={running} onChange={(mode) => set({ mode })} render={(m) => t(`modes.${m}`)} />

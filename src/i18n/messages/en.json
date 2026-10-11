@@ -22,7 +22,8 @@
     "continue": "Start learning"
   },
   "path": {
-    "title": "Learning path"
+    "title": "Learning path",
+    "subtitle": "Step by step from your first key to playing with both hands."
   },
   "practice": {
     "title": "Practice room",
@@ -114,5 +115,53 @@
     "denied": "MIDI access was denied.",
     "no-device": "No MIDI keyboard found. Connect via USB/Bluetooth and try again.",
     "fallback": "You can still click the on-screen keys or use your computer keyboard (A W S E D F T G Y H U J K…)."
+  },
+  "lesson": {
+    "listen": "Listen",
+    "keyboardLabel": "Piano keyboard",
+    "correct": "Correct",
+    "wrong": "Wrong",
+    "quizCorrect": "Correct!",
+    "quizTryAgain": "Not quite — try another answer.",
+    "drillScore": "Score: {score}/100",
+    "drillPassed": "Passed — you can continue.",
+    "drillFailed": "Reach {pass} to continue. Take your time and try again.",
+    "retry": "Try again",
+    "startDrill": "Start",
+    "round": "Round {n}/{total}",
+    "foundCount": "Found {n}/{total}",
+    "readStaffLabel": "Staff with one note to name",
+    "chooseNote": "Choose the note name",
+    "rhythmHelp": "After a one-bar count-in at {bpm} BPM, tap on each note: any piano key, Space, or the Tap button.",
+    "rhythmStaffLabel": "Rhythm to tap",
+    "tap": "Tap",
+    "rhythmDetail": "{hits}/{total} on time, {extra} extra taps",
+    "locked": "Finish the previous lesson first to unlock this one.",
+    "backToPath": "Back to path",
+    "exit": "Exit lesson",
+    "levelN": "Level {n}",
+    "progress": "Lesson progress",
+    "stepOf": "Step {n}/{total}",
+    "complete": "Lesson complete!",
+    "stars": "{count} of 3 stars",
+    "lessonScore": "Score {score}/100",
+    "nextLesson": "Next lesson",
+    "stepNav": "Lesson steps",
+    "back": "Back",
+    "continue": "Continue",
+    "finish": "Finish",
+    "passToContinue": "Pass this step to continue",
+    "kinds": {
+      "theory": "Theory",
+      "drill": "Drill",
+      "technique": "Technique",
+      "song": "Song",
+      "checkpoint": "Checkpoint"
+    },
+    "totalXp": "{xp} XP",
+    "goal": "Goal",
+    "lessonsDone": "{n}/{total} lessons done",
+    "minutes": "{n} min",
+    "lockedShort": "locked"
   }
 }

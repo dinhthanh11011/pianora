@@ -12,8 +12,9 @@ import { useSettings } from "@/stores/settings";
  * Mount once per page that needs live playing: wires MIDI + computer keyboard into the bus,
  * plays sound and mirrors held notes into the input store.
  */
-export function usePianoInput({ computerKeyboard = true }: { computerKeyboard?: boolean } = {}) {
+export function usePianoInput({ computerKeyboard = true, enabled = true }: { computerKeyboard?: boolean; enabled?: boolean } = {}) {
   useEffect(() => {
+    if (!enabled) return;
     const store = useInputStore.getState();
     const offBus = onInput((e: InputEvent) => {
       const playSound = e.source !== "midi" || useSettings.getState().soundForMidi;
@@ -40,7 +41,7 @@ export function usePianoInput({ computerKeyboard = true }: { computerKeyboard?: 
       disconnect();
       offKeys();
     };
-  }, [computerKeyboard]);
+  }, [computerKeyboard, enabled]);
 }
 
 /** Handlers for the on-screen keyboard that feed the same bus. */

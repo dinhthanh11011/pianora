@@ -1,4 +1,5 @@
-import { nameToMidi, type Finger, type Hand, type Score, type ScoreNote } from "@/lib/music-core";
+import type { Score } from "@/lib/music-core";
+import { chords, line } from "./build";
 
 export interface PracticePiece {
   score: Score;
@@ -7,28 +8,7 @@ export interface PracticePiece {
   level: number;
 }
 
-/** Sequential melody: [note, beats, finger?] — "-" is a rest. */
-function line(hand: Hand, items: [string, number, Finger?][], startBeat = 0): ScoreNote[] {
-  let t = startBeat;
-  const out: ScoreNote[] = [];
-  for (const [name, duration, finger] of items) {
-    if (name !== "-") out.push({ midi: nameToMidi(name), start: t, duration, hand, finger });
-    t += duration;
-  }
-  return out;
-}
-
-/** Block chords: [["C4","E4","G4"], beats, fingers?]. */
-function chords(hand: Hand, items: [string[], number, Finger[]?][]): ScoreNote[] {
-  let t = 0;
-  return items.flatMap(([names, duration, fingers]) => {
-    const notes = names.map((n, i) => ({ midi: nameToMidi(n), start: t, duration, hand, finger: fingers?.[i] }));
-    t += duration;
-    return notes;
-  });
-}
-
-const cMajorScale: PracticePiece = {
+export const cMajorScale: PracticePiece = {
   title: { vi: "Gam Đô trưởng (tay phải)", en: "C major scale (right hand)" },
   level: 0,
   score: {
@@ -44,7 +24,7 @@ const cMajorScale: PracticePiece = {
   },
 };
 
-const odeToJoy: PracticePiece = {
+export const odeToJoy: PracticePiece = {
   title: { vi: "Ode to Joy (Beethoven) — hai tay", en: "Ode to Joy (Beethoven) — hands together" },
   level: 1,
   score: {
@@ -70,7 +50,7 @@ const odeToJoy: PracticePiece = {
   },
 };
 
-const chordProgression: PracticePiece = {
+export const chordProgression: PracticePiece = {
   title: { vi: "Hợp âm I–IV–V–I (Đô trưởng)", en: "Chords I–IV–V–I (C major)" },
   level: 1,
   score: {

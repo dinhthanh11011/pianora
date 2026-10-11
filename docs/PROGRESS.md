@@ -3,8 +3,8 @@
 > Source of truth for "where are we / what next". Update after every task. Plan: `docs/PLAN.md`.
 
 ## Status
-- **Current phase:** P4 Lesson player & content L0–L3
-- **Next up:** P4.1 Curriculum schema (zod) in `src/content/curriculum/` — reuse `Score` from music-core for song/drill steps; move `src/content/scores` pieces into it
+- **Current phase:** P5 Progress & motivation
+- **Next up:** P5.1 ProgressRepository + Dexie — migrate interim `src/stores/progress.ts` (localStorage key `pianora-progress`) behind the repository
 - **Blockers:** none
 
 ## Phases & tasks
@@ -35,14 +35,14 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` todo
 - [x] P3.5 Result screen: accuracy, timing histogram, stars, weak-notes heatmap
 
 ### P4 — Lesson player & content L0–L3
-- [ ] P4.1 Curriculum schema (zod): Level → Unit → Lesson (theory/drill/technique/song/checkpoint)
-- [ ] P4.2 Lesson player shell + theory step renderer (text, keyboard demo, quiz)
-- [ ] P4.3 Drills: note-finding on keyboard, staff note reading, rhythm tapping
-- [ ] P4.4 Content Level 0 (posture, keyboard map, finger numbers, middle C)
-- [ ] P4.5 Content Level 1 (pulse, note values, C position RH/LH)
-- [ ] P4.6 Content Level 2 (treble/bass clef, landmarks, intervals)
-- [ ] P4.7 Content Level 3 (hands together, 3/4, dynamics) + checkpoints
-- [ ] P4.8 Path (skill tree) page with lock/unlock
+- [x] P4.1 Curriculum schema (zod): Level → Unit → Lesson (theory/drill/technique/song/checkpoint)
+- [x] P4.2 Lesson player shell + theory step renderer (text, keyboard demo, quiz)
+- [x] P4.3 Drills: note-finding on keyboard, staff note reading, rhythm tapping
+- [x] P4.4 Content Level 0 (posture, keyboard map, finger numbers, middle C)
+- [x] P4.5 Content Level 1 (pulse, note values, C position RH/LH)
+- [x] P4.6 Content Level 2 (treble/bass clef, landmarks, intervals)
+- [x] P4.7 Content Level 3 (hands together, 3/4, dynamics) + checkpoints
+- [x] P4.8 Path (skill tree) page with lock/unlock
 
 ### P5 — Progress & motivation
 - [ ] P5.1 ProgressRepository + Dexie impl (lessonProgress, attempts, settings…)
@@ -65,12 +65,15 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` todo
 - 2026-10-11 Repo: github.com/dinhthanh11011/pianora (main). Commit + push after each completed phase.
 - 2026-10-11 Design: ui-ux-pro-max output adapted — fonts Be Vietnam Pro (Vietnamese diacritics; Righteous/Poppins lack them); primary indigo instead of red because red/green are reserved for wrong/correct note feedback; amber kept as accent (XP/streak). Dark default. See MASTER.md "Pianora overrides".
 
+- 2026-10-11 Lesson progress kept in an interim Zustand/localStorage store (`stores/progress.ts`) so the path can lock/unlock before P5.1; unlock order is linear across the whole curriculum.
+
 ## Session log
 - 2026-10-11 S1: plan approved; P1 done (build OK); P2.1–P2.2 music-core + 9 tests passing.
 - 2026-10-11 S1: P2 done — Keyboard88 (SVG, glissando, velocity by y), Tone.js sampler w/ local Salamander samples (public/samples, CC-BY), input bus (Web MIDI + computer keyboard A-row/Z-X octave/Space pedal + pointer), stores (input, settings persisted), Metronome + latency calibration on /tools, free play + chord detection on /practice. 10 tests, build + lint clean, verified in Chrome (vi/en, 375 & 1440).
 
 - 2026-10-11 S2: P3.1 — `music-core/score.ts` (Score in beats → `toTimeline` ms w/ tempo/hand/A–B, `groupChords` 80ms) + `scoring.ts` (windows 50/120/250, `TimingMatcher` real-time, `WaitCursor`, `summarize` → accuracy/timing/score/stars/offsets/velocity evenness/byNote, `toScoreTime` subtracts latency). 19 tests, tsc + lint clean.
 - 2026-10-11 S2: P3 done — `notation.ts` (measures/rests/ties → VexFlow tokens), `StaffView` (VexFlow lazy, grand staff, cursor, status colors, scales down <640px), `FallingNotes` canvas (shared `keyLayout` with Keyboard88), `usePracticeSession` (Wait/Play-along/Performance, count-in via audio-clock `scheduleClicks`, A–B loop, tempo 40–120%, hand split auto-plays other hand), `ResultPanel` (stars, histogram, rushing/dragging, weak-note heatmap via Keyboard88 `tints`). 3 demo pieces in `src/content/scores`. Practice page = tabs (pieces / free play). 21 tests, build + lint clean; verified in Chrome (wait + play-along scored as scripted, light/dark, 375px).
+- 2026-10-11 S3: P4 done — zod curriculum schema (Level→Unit→Lesson→Step: theory/quiz/findNote/readNote/rhythm/play), content L0–L3 (29 lessons, checkpoints per level), LessonPlayer (`/lesson/[id]`, gated steps, stars/XP), drills (find key incl. all-octaves timed, staff reading, rhythm tapping via TimingMatcher), PathView with lock/unlock. `music-core/drills.ts` + curriculum tests, vitest alias config. 30 tests, build + lint clean; verified in Chrome.
 
 ## Key files map (for fast resume)
 - Input pipeline: `src/lib/midi/bus.ts` → `src/hooks/usePianoInput.ts` (sound + store) · sources: `webmidi.ts`, `computerKeyboard.ts`, `pointerHandlers`
@@ -78,3 +81,4 @@ Legend: `[x]` done · `[~]` in progress · `[ ]` todo
 - UI: `src/components/piano/{Keyboard88,LivePiano,MidiStatus}.tsx`, `src/components/tools/*`, shell `src/components/shell/*`
 - Theory: `src/lib/music-core/*` (index re-exports all) · practice: `score.ts`, `scoring.ts`, `notation.ts`
 - Practice UI: `src/components/practice/{PracticeRoom,PracticePlayer,FallingNotes,ResultPanel}.tsx` · engine hook `src/hooks/usePracticeSession.ts` · staff `src/components/notation/StaffView.tsx`
+- Curriculum: `src/content/curriculum/{schema,index,level0-3,songs,build}.ts` · lesson UI `src/components/lesson/*` (LessonPlayer, PathView, drills) · progress `src/stores/progress.ts`
